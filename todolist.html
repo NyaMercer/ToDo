@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+</head>
+<style>
+	*{
+		margin:0;
+		padding: 0;
+	}
+	.top-box{
+		width:100%;
+		height:50px;
+		background: rgba(47,47,47,0.98);
+	}
+	.top{
+		width:600px;
+		height: 50px;
+		margin:0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.td{
+		width:100px;
+		height:50px;
+		font-size: 24px;
+		color: #ddd;
+		line-height:50px;
+	}
+	.top input{
+		width:360px;
+		height:24px;
+		font-size: 12px;
+		border: none;
+		box-shadow:0 1px 0 rgba(255,255,255,0.24), 0 1px 6px rgba(0,0,0,0.45) inset;
+		border-radius: 6px;
+		text-indent: 12px;
+		outline: none;
+	}
+	section{
+		width:600px;
+		height: auto;
+		margin: 0 auto;
+	}
+	.now,.end{
+		width:600px;
+		height:31px;
+		margin-top: 20px;
+		font-size: 1.5em;
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	section .now p{
+		float:right;
+		width:20px;
+		height: 20px;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 20px;
+		color: #666;
+		background: #E6E6FA;
+		font-size: 14px;
+	}
+	section .end p{
+		float:right;
+		width:20px;
+		height: 20px;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 20px;
+		color: #666;
+		background: #E6E6FA;
+		font-size: 14px;
+	}
+	footer{
+		width:100%;
+		font-size: 14px;
+		text-align: center;
+		color:#666;
+		margin-top: 50px;
+	}
+	body{
+		background:#CDCDCD;
+	}
+	.nnow{
+	height: 32px;
+    line-height: 32px;
+    background: #fff;
+    position: relative;
+    margin-bottom: 10px;
+    padding: 0 45px;
+    border-radius: 3px;
+    border-left: 5px solid #629A9C;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+	}
+	.now-b,.end-b{
+		width:600px;
+		height:32px;	
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background:#ffffff;
+		border-radius: 3px;
+		border-left:5px solid #629A9C;
+		margin-top: 20px;
+	}
+	.end-b{
+		border-left: 5px solid #999;
+		opacity: 0.5;
+	}
+	.now-b input{
+		width:25px;
+		height: 25px;
+		margin-left: 12px;
+	}
+	.end-b input{
+		width:25px;
+		height: 25px;
+		margin-left: 12px;
+	}
+	.now-b p{
+		width:505px;
+		height:100%;
+		line-height: 32px;
+	}
+	.end-b p{
+		width:505px;
+		height:100%;
+		line-height: 32px;
+	}
+	.now-b a{
+		width:12px;
+		height: 10px;
+		display: block;
+		border: 6px double #fff;
+		border-radius: 14px;
+		text-align: center;
+		color: #fff;
+		font-size: 14px;
+		background: #ccc;
+		cursor: pointer;
+	}
+	.end-b a{
+		width:12px;
+		height: 10px;
+		display: block;
+		border: 6px double #fff;
+		border-radius: 14px;
+		text-align: center;
+		color: #fff;
+		font-size: 14px;
+		background: #ccc;	
+	}
+</style>
+<body>
+	<div class=top-box>
+		<div class=top>
+			<div class=td>ToDoList</div>
+			<form action="" onsubmit='return false'>
+				<input type="text" id='title' name='title' placeholder='添加ToDo'/>
+			</form>	
+		</div>	
+	</div>
+	<section>
+		<div class=now>正在进行
+			<p>0</p>
+		</div>
+		<div class=nb-box>
+			<!--<div class=now-b>
+				<input type="checkbox" onchange='' />
+				<p id=p-1></p>
+				<a href="javascript:;"></a>
+			</div>-->
+		</div>
+		<div class=end>已经完成
+			<p>0</p>
+		</div>
+		<div class=eb-box>
+			<!--<div class=end-b>
+				<input type="checkbox" onchange='' />
+				<p></p>
+				<a href="javascript:;"></a>
+			</div>-->
+		</div>
+	</section>
+	<footer>
+		Copyright © 2014 todolist.cn clear
+	</footer>
+</body>
+</html>
+<script>
+	window.onload=function(){
+//		localStorage.clear()
+		let ipt=document.querySelector('#title')
+		let now=document.querySelector('.now')
+		let old=document.querySelector('.end')
+		let nowbox=document.querySelector('.nb-box')
+		let ebbox=document.querySelector('.eb-box')
+		let dat=[];
+		let data=[];
+		let dat1=[];
+		let data1=[];
+		let nr=ipt.value;
+		let a=document.querySelector('.now p')
+		let b=document.querySelector('.end p')
+//		localStorage.nextid=data.length;
+		let nextid=0;
+		let nextid2=0;
+
+		if(localStorage.dat){
+			data=JSON.parse(localStorage.dat)
+			}
+		if(localStorage.dat1){
+			data1=JSON.parse(localStorage.dat1)
+			}
+		if(localStorage.id){
+			nextid=JSON.parse(Number(localStorage.id)+1)
+			}
+		if(localStorage.id2){
+			nextid2=JSON.parse(Number(localStorage.id2)+1)
+			}
+
+		let str='';
+			data.forEach(function(val){
+				str+=
+				`
+					<div class=now-b  id=${val.id}>
+						<input class=nowinput type="checkbox" onchange='' />
+						<p>${val.title}</p>
+						<a href="javascript:;" class='yan1'></a>
+						</div>			
+				`
+				})
+			nowbox.innerHTML+=str;
+			
+			let str1='';
+			data1.forEach(function(val){
+				str1+=
+				`
+					<div class=end-b  id=${val.id}>
+						<input class=nowinput type="checkbox" onchange='' />
+						<p>${val.title}</p>
+						<a href="javascript:;" class='yan2'></a>
+						</div>			
+				`
+				})
+			ebbox.innerHTML+=str1;
+		ipt.onfocus=function(){
+			document.onkeydown=function(e){	
+			let nr=ipt.value;
+			let code=e.which;		
+			if(code==13){
+				if(ipt.value==''){
+					alert('请重新输入')
+				}
+				else{
+					let str3='';
+						str3+=
+							`
+							<div class=now-b id=${nextid}>
+								<input class=nowinput type="checkbox" onchange='' />
+								<p>${nr}</p>
+								<a href="javascript:;" class='yan1'></a>
+								</div>			
+							`
+								nowbox.innerHTML+=str3;
+						
+						data.push({id:`${nextid}`, title:nr})
+						localStorage.dat=JSON.stringify(data)
+						localStorage.id=JSON.stringify(nextid)
+						nextid++;
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+				}
+			}
+		}
+			
+	}	
+		let inpts=document.querySelectorAll('.now-b')
+		inpts.forEach(function(val,index1){
+		val.addEventListener('click',function(e){
+			e.preventDefault;
+			let obj=e.target;
+			let par=obj.parentNode;
+			let aid=par.id
+			if(obj.nodeName=='INPUT'){
+				par.parentNode.removeChild(par)
+			let index=data.findIndex(function(val){
+					return val.id==aid;
+			})
+				data.splice(index,1)
+				localStorage.dat=JSON.stringify(data)
+				localStorage.id++;
+				let ps=inpts[index1].querySelector('p')
+				let nr=ps.innerHTML;
+						str1+=
+							`
+							<div class=end-b id=${nextid2}>
+								<input class=nowinput type="checkbox" onchange='' />
+								<p>${nr}</p>
+								<a href="javascript:;" class='yan2'></a>
+								</div>			
+							`
+								ebbox.innerHTML=str1;	
+							
+						data1.push({id:`${nextid2}`, title:`${nr}`})			
+						localStorage.id2=JSON.stringify(nextid2)
+						localStorage.dat1=JSON.stringify(data1)
+						nextid2++;	
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+			}
+		},false)
+	})
+		let endb=document.querySelectorAll('.end-b');
+	endb.forEach(function(val,index1){
+		val.addEventListener('click',function(e){
+			e.preventDefault;
+			let obj=e.target;
+			let par=obj.parentNode;
+			let aid=par.id
+			if(obj.nodeName=='INPUT'){
+				par.parentNode.removeChild(par)
+			let index=data1.findIndex(function(val){
+					return val.id==aid;
+			})
+				data1.splice(index,1)
+//				localStorage.id=JSON.stringify(nextid)
+				localStorage.dat1=JSON.stringify(data1)
+				localStorage.id2++;
+				let ps=endb[index1].querySelector('p')
+							let nr=ps.innerHTML;
+						str+=
+							`
+							<div class=now-b id=${nextid}>
+								<input class=nowinput type="checkbox" onchange='' />
+								<p>${nr}</p>
+								<a href="javascript:;" class='yan1'></a>
+								</div>			
+							`
+								nowbox.innerHTML=str;	
+							
+						data.push({id:`${nextid}`, title:`${nr}`})			
+						localStorage.id=JSON.stringify(nextid)
+						localStorage.dat=JSON.stringify(data)
+						nextid++;	
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+			}
+		},false)
+	})
+					
+	let yan1=document.querySelectorAll('.yan1');
+	let yan2=document.querySelectorAll('.yan2');
+	yan1.forEach(function(val,index){
+		val.onclick=function(){
+			let par=val.parentNode.parentNode;
+			let aid=val.parentNode.id
+			par.removeChild(val.parentNode)
+				let index=data.findIndex(function(val){
+					return val.id==aid;
+			})
+				data.splice(index,1)
+				localStorage.dat=JSON.stringify(data)
+				localStorage.id++;
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+		}
+	})			
+		yan2.forEach(function(val,index){
+		val.onclick=function(){
+			let par=val.parentNode.parentNode;
+				par.removeChild(val.parentNode)
+				let aid=val.parentNode.id
+				let index=data1.findIndex(function(val){
+					return val.id==aid;
+					})
+				data1.splice(index,1)
+				localStorage.dat1=JSON.stringify(data1)
+				localStorage.id2++;
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+					
+		}
+	})					
+
+						if(typeof localStorage.id =='undefined'){
+							a.innerHTML='0'
+						}else{
+							a.innerHTML=JSON.parse(localStorage.dat).length;
+						
+						}
+						if(typeof localStorage.id2 =='undefined'){
+							b.innerHTML=0;
+						}else{
+							b.innerHTML=JSON.parse(localStorage.dat1).length;
+						}
+
+}
+</script>
+<script type="text/javascript">
+
+</script>
